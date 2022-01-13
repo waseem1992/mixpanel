@@ -571,13 +571,14 @@ map.on("touchmove", function () {
 /* Mixpanel code for event on apply */
 $('body').on('click', '.ApplyButton', function() {
 
-  mixpanel.track('Apply Button Clciked',{
+  mixpanel.track('Apply Button Clicked',{
     'Title':$(this).attr("data-title"),
     'JobType':$(this).attr("data-jobtype"),
     'JobCompany':$(this).attr("data-company"),
     'Salary':$(this).attr("data-salary"),
     'Location':$(this).attr("data-location"),
-    'DatePosted':$(this).attr("data-posted")
+    'DatePosted':$(this).attr("data-posted"),
+    'JobUrl':$(this).attr('href')
     });
 });
 
