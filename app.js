@@ -67,6 +67,16 @@ function createPopup(currentFeature) {
     // });
 }
 
+function createPopup(currentFeature) {
+  console.log('apply button clicked');
+  mixpanel.track('Apply Button Clicked',{
+  "Title":currentFeature.properties[config.popupInfo[1]],
+  "Company":currentFeature.properties[config.popupInfo[2]],
+  "Job Type":currentFeature.properties[config.popupInfo[3]],
+  "Salary":currentFeature.properties[config.popupInfo[4]],
+  "Location":currentFeature.properties[config.popupInfo[5]]
+  });
+
 function buildLocationList(locationData) {
   /* Add a new listing section to the sidebar. */
   const listings = document.getElementById("listings");
