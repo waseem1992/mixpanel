@@ -1,553 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Demo: Store Locator</title>
-    <meta name="robots" content="noindex, nofollow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700"
-      rel="stylesheet"
-    />
-    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
-    <link
-      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        color: #404040;
-        font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
-        margin: 0;
-        padding: 0;
-        -webkit-font-smoothing: antialiased;
-      }
+<html>
 
-      * {
-        box-sizing: border-box;
-      }
+<head>
+    <title>Job Search</title>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css' rel='stylesheet'>
+    <script src='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css' rel='stylesheet' />
+    <script
+        src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet'
+        href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css'
+        type='text/css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/geojson/0.5.0/geojson.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel='stylesheet' href="style.css" />
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-208732268-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
 
-      .sidebar {
-        position: absolute;
-        width: 33.3333%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        border-right: 1px solid rgba(0, 0, 0, 0.25);
-      }
-      .pad2 {
-        padding: 20px;
-      }
+gtag('config', 'UA-208732268-1'); 
+</script>
+    
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KSV9XQP');</script>
+<!-- End Google Tag Manager -->
 
-      .map {
-        position: absolute;
-        left: 33.33%;
-        width: 66.66%;
-        top: 0;
-        bottom: 0;
-      }
 
-      h1 {
-        font-size: 22px;
-        margin: 0;
-        font-weight: 400;
-        line-height: 20px;
-        padding: 20px 2px;
-      }
+<script type="text/javascript">
+(function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]=[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (stub)");return d};a.people.toString=function(){return a.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+for(h=0;h<i.length;h++)g(a,i[h]);var j="set set_once union unset remove delete".split(" ");a.get_group=function(){function b(c){d[c]=function(){call2_args=arguments;call2=[c].concat(Array.prototype.slice.call(call2_args,0));a.push([e,call2])}}for(var d={},e=["get_group"].concat(Array.prototype.slice.call(arguments,0)),c=0;c<j.length;c++)b(j[c]);return d};b._i.push([e,f,c])};b.__SV=1.2;e=f.createElement("script");e.type="text/javascript";e.async=!0;e.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
+MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
 
-      a {
-        color: #404040;
-        text-decoration: none;
-      }
+// Enabling the debug mode flag is useful during implementation,
+// but it's recommended you remove it for production
+mixpanel.init('aef322c34b82f903473aa894cd5b0d00'); 
+</script>      
+</head>
 
-      a:hover {
-        color: #101010;
-      }
+<body>
+    <div class='flex-parent viewport-full relative scroll-hidden'>
+        <div class='flex-child w-full w360-ml absolute static-ml left bottom'>
+            <div class='flex-parent flex-parent--column viewport-third bg-white'>
+                <div class='flex-child flex-child--grow'>
+                    <div id="sidebarA"
+                        class="flex-parent flex-parent--column-ml flex-parent--center-main theme py12 px12 ">
+                        <h3 id='title' class='txt-l-ml txt-m txt-bold mb6 mr0-ml mr24 align-center block'>
+                        </h3>
+                        <p id='description' class='txt-s py12 none block-ml'>
+                        </p>
+                        <div class="flex-parent flex-parent--center-main relative-ml absolute right top mt0-ml mt6">
+                            <button id='filterResults' class='txt-bold btn btn--stroke mr0-ml mr12 px18-ml px6'>
+                                <svg class='icon inline-block align-middle h24 w24'>
+                                    <use xlink:href='#icon-filter' /></svg>
+                                <p class="inline-block-ml align-middle remove none">Show Filters</p>
+                            </button>
+                        </div>
 
-      .heading {
-        background: #fff;
-        border-bottom: 1px solid #eee;
-        min-height: 60px;
-        line-height: 60px;
-        padding: 0 10px;
-        background-color: #00853e;
-        color: #fff;
-      }
 
-      .listings {
-        height: 100%;
-        overflow: auto;
-        padding-bottom: 60px;
-      }
+                    </div>
+                    <div id="listings" class="flex-child viewport-twothirds py12 px12 listings scroll-auto"></div>
 
-      .listings .item {
-        border-bottom: 1px solid #eee;
-        padding: 10px;
-        text-decoration: none;
-      }
+                </div>
+            </div>
+        </div>
+        <div class='flex-child flex-child--grow w-auto viewport-full-ml viewport-twothirds' id='map'>
 
-      .listings .item:last-child {
-        border-bottom: none;
-      }
-      .listings .item .title {
-        display: block;
-        color: #00853e;
-        font-weight: 700;
-      }
+        </div>
 
-      .listings .item .title small {
-        font-weight: 400;
-      }
-      .listings .item.active .title,
-      .listings .item .title:hover {
-        color: #8cc63f;
-      }
-      .listings .item.active {
-        background-color: #f8f8f8;
-      }
-      ::-webkit-scrollbar {
-        width: 3px;
-        height: 3px;
-        border-left: 0;
-        background: rgba(0, 0, 0, 0.1);
-      }
-      ::-webkit-scrollbar-track {
-        background: none;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #00853e;
-        border-radius: 0;
-      }
+        <div id='modal'
+            class='absolute top right bottom left scroll-auto hide-visually flex-parent flex-parent--center-main mt120-ml'>
+            <div class='pt36'>
+                <div class='flex-child bg-white round relative scroll-auto'>
+                    <button id='exitButton' class='absolute top right px12 py12'>
+                        <svg class='icon link color-darken50'>
+                            <use xlink:href='#icon-close'></use>
+                        </svg>
+                    </button>
+                    <div class='px24 py24'>
+                        <form id="filters"></form>
+                        <div class='align-center py12'></div>
+                        <div class="flex-parent flex-parent--center-main">
+                            <button id="removeFilters" class="btn">Reset Filters</button>
+                        </div>
 
-      .marker {
-        border: none;
-        cursor: pointer;
-        height: 20px;
-        width: 15px;
-        background-image: url('greenpin.png');
-      }
+                    </div>
 
-      /* Marker tweaks */
-      .mapboxgl-popup {
-        padding-bottom: 50px;
-      }
+                </div>
+            </div>
+        </div>
 
-      .mapboxgl-popup-close-button {
-        display: none;
-      }
-      .mapboxgl-popup-content {
-        font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
-        padding: 0;
-        width: 180px;
-      }
-
-      .mapboxgl-popup-content h3 {
-        background: #91c949;
-        color: #fff;
-        margin: -15px 0 0;
-        padding: 10px;
-        border-radius: 3px 3px 0 0;
-        font-weight: 700;
-      }
-
-      .mapboxgl-popup-content h4 {
-        margin: 0;
-        padding: 10px;
-        font-weight: 400;
-      }
-
-      .mapboxgl-popup-content div {
-        padding: 10px;
-      }
-
-      .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
-        margin-top: 15px;
-      }
-
-      .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
-        border-bottom-color: #91c949;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="heading">
-        <h1>Our locations</h1>
-      </div>
-      <div id="listings" class="listings"></div>
     </div>
-    <div id="map" class="map"></div>
-    <script>
-      mapboxgl.accessToken = 'pk.eyJ1IjoiY2FuYWdpZyIsImEiOiJja3V6dzdtNWYydGExMndvZG12NThqbmpkIn0._qXSCKmbH3kafrivy_7o9w';
 
-      /**
-       * Add the map to the page
-       */
-      const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/canagig/ckv4ib5425pot14o6shn1e64g',
-        center: [-101.871088,36.717658],
-        zoom: 3,
-        scrollZoom: false
-      });
+    </div>
+</body>
 
-      const stores = {
-        'type': 'FeatureCollection',
-        'features': [
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.034084142948, 38.909671288923]
-            },
-            'properties': {
-              'phoneFormatted': '(202) 234-7336',
-              'phone': '2022347336',
-              'address': '1471 P St NW',
-              'city': 'Washington DC',
-              'country': 'United States',
-              'crossStreet': 'at 15th St NW',
-              'postalCode': '20005',
-              'state': 'D.C.'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.049766, 38.900772]
-            },
-            'properties': {
-              'phoneFormatted': '(202) 507-8357',
-              'phone': '2025078357',
-              'address': '2221 I St NW',
-              'city': 'Washington DC',
-              'country': 'United States',
-              'crossStreet': 'at 22nd St NW',
-              'postalCode': '20037',
-              'state': 'D.C.'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.043929, 38.910525]
-            },
-            'properties': {
-              'phoneFormatted': '(202) 387-9338',
-              'phone': '2023879338',
-              'address': '1512 Connecticut Ave NW',
-              'city': 'Washington DC',
-              'country': 'United States',
-              'crossStreet': 'at Dupont Circle',
-              'postalCode': '20036',
-              'state': 'D.C.'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.0672, 38.90516896]
-            },
-            'properties': {
-              'phoneFormatted': '(202) 337-9338',
-              'phone': '2023379338',
-              'address': '3333 M St NW',
-              'city': 'Washington DC',
-              'country': 'United States',
-              'crossStreet': 'at 34th St NW',
-              'postalCode': '20007',
-              'state': 'D.C.'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.002583742142, 38.887041080933]
-            },
-            'properties': {
-              'phoneFormatted': '(202) 547-9338',
-              'phone': '2025479338',
-              'address': '221 Pennsylvania Ave SE',
-              'city': 'Washington DC',
-              'country': 'United States',
-              'crossStreet': 'btwn 2nd & 3rd Sts. SE',
-              'postalCode': '20003',
-              'state': 'D.C.'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-76.933492720127, 38.99225245786]
-            },
-            'properties': {
-              'address': '8204 Baltimore Ave',
-              'city': 'College Park',
-              'country': 'United States',
-              'postalCode': '20740',
-              'state': 'MD'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.097083330154, 38.980979]
-            },
-            'properties': {
-              'phoneFormatted': '(301) 654-7336',
-              'phone': '3016547336',
-              'address': '4831 Bethesda Ave',
-              'cc': 'US',
-              'city': 'Bethesda',
-              'country': 'United States',
-              'postalCode': '20814',
-              'state': 'MD'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.359425054188, 38.958058116661]
-            },
-            'properties': {
-              'phoneFormatted': '(571) 203-0082',
-              'phone': '5712030082',
-              'address': '11935 Democracy Dr',
-              'city': 'Reston',
-              'country': 'United States',
-              'crossStreet': 'btw Explorer & Library',
-              'postalCode': '20190',
-              'state': 'VA'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.10853099823, 38.880100922392]
-            },
-            'properties': {
-              'phoneFormatted': '(703) 522-2016',
-              'phone': '7035222016',
-              'address': '4075 Wilson Blvd',
-              'city': 'Arlington',
-              'country': 'United States',
-              'crossStreet': 'at N Randolph St.',
-              'postalCode': '22203',
-              'state': 'VA'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-75.28784, 40.008008]
-            },
-            'properties': {
-              'phoneFormatted': '(610) 642-9400',
-              'phone': '6106429400',
-              'address': '68 Coulter Ave',
-              'city': 'Ardmore',
-              'country': 'United States',
-              'postalCode': '19003',
-              'state': 'PA'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-75.20121216774, 39.954030175164]
-            },
-            'properties': {
-              'phoneFormatted': '(215) 386-1365',
-              'phone': '2153861365',
-              'address': '3925 Walnut St',
-              'city': 'Philadelphia',
-              'country': 'United States',
-              'postalCode': '19104',
-              'state': 'PA'
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.043959498405, 38.903883387232]
-            },
-            'properties': {
-              'phoneFormatted': '(202) 331-3355',
-              'phone': '2023313355',
-              'address': '1901 L St. NW',
-              'city': 'Washington DC',
-              'country': 'United States',
-              'crossStreet': 'at 19th St',
-              'postalCode': '20036',
-              'state': 'D.C.'
-            }
-          }
-        ]
-      };
+<script>
 
-      /**
-       * Assign a unique id to each store. You'll use this `id`
-       * later to associate each point on the map with a listing
-       * in the sidebar.
-       */
-      stores.features.forEach((store, i) => {
-        store.properties.id = i;
-      });
+</script>
+<script src="config.js"></script>
+<script src="app.js"></script>
 
-      /**
-       * Wait until the map loads to make changes to the map.
-       */
-      map.on('load', () => {
-        /**
-         * This is where your '.addLayer()' used to be, instead
-         * add only the source without styling a layer
-         */
-        map.addSource('places', {
-          'type': 'geojson',
-          'data': stores
-        });
-
-        /**
-         * Add all the things to the page:
-         * - The location listings on the side of the page
-         * - The markers onto the map
-         */
-        buildLocationList(stores);
-        addMarkers();
-      });
-
-      /**
-       * Add a marker to the map for every store listing.
-       **/
-      function addMarkers() {
-        /* For each feature in the GeoJSON object above: */
-        for (const marker of stores.features) {
-          /* Create a div element for the marker. */
-          const el = document.createElement('div');
-          /* Assign a unique `id` to the marker. */
-          el.id = `marker-${marker.properties.id}`;
-          /* Assign the `marker` class to each marker for styling. */
-          el.className = 'marker';
-
-          /**
-           * Create a marker using the div element
-           * defined above and add it to the map.
-           **/
-          new mapboxgl.Marker(el, { offset: [0, -23] })
-            .setLngLat(marker.geometry.coordinates)
-            .addTo(map);
-
-          /**
-           * Listen to the element and when it is clicked, do three things:
-           * 1. Fly to the point
-           * 2. Close all other popups and display popup for clicked store
-           * 3. Highlight listing in sidebar (and remove highlight for all other listings)
-           **/
-          el.addEventListener('click', (e) => {
-            /* Fly to the point */
-            flyToStore(marker);
-            /* Close all other popups and display popup for clicked store */
-            createPopUp(marker);
-            /* Highlight listing in sidebar */
-            const activeItem = document.getElementsByClassName('active');
-            e.stopPropagation();
-            if (activeItem[0]) {
-              activeItem[0].classList.remove('active');
-            }
-            const listing = document.getElementById(
-              `listing-${marker.properties.id}`
-            );
-            listing.classList.add('active');
-          });
-        }
-      }
-
-      /**
-       * Add a listing for each store to the sidebar.
-       **/
-      function buildLocationList(stores) {
-        for (const store of stores.features) {
-          /* Add a new listing section to the sidebar. */
-          const listings = document.getElementById('listings');
-          const listing = listings.appendChild(document.createElement('div'));
-          /* Assign a unique `id` to the listing. */
-          listing.id = `listing-${store.properties.id}`;
-          /* Assign the `item` class to each listing for styling. */
-          listing.className = 'item';
-
-          /* Add the link to the individual listing created above. */
-          const link = listing.appendChild(document.createElement('a'));
-          link.href = '#';
-          link.className = 'title';
-          link.id = `link-${store.properties.id}`;
-          link.innerHTML = `${store.properties.address}`;
-
-          /* Add details to the individual listing. */
-          const details = listing.appendChild(document.createElement('div'));
-          details.innerHTML = `${store.properties.city}`;
-          if (store.properties.phone) {
-            details.innerHTML += ` &middot; ${store.properties.phoneFormatted}`;
-          }
-
-          /**
-           * Listen to the element and when it is clicked, do four things:
-           * 1. Update the `currentFeature` to the store associated with the clicked link
-           * 2. Fly to the point
-           * 3. Close all other popups and display popup for clicked store
-           * 4. Highlight listing in sidebar (and remove highlight for all other listings)
-           **/
-          link.addEventListener('click', function () {
-            for (const feature of stores.features) {
-              if (this.id === `link-${feature.properties.id}`) {
-                flyToStore(feature);
-                createPopUp(feature);
-              }
-            }
-            const activeItem = document.getElementsByClassName('active');
-            if (activeItem[0]) {
-              activeItem[0].classList.remove('active');
-            }
-            this.parentNode.classList.add('active');
-          });
-        }
-      }
-
-      /**
-       * Use Mapbox GL JS's `flyTo` to move the camera smoothly
-       * a given center point.
-       **/
-      function flyToStore(currentFeature) {
-        map.flyTo({
-          center: currentFeature.geometry.coordinates,
-          zoom: 15
-        });
-      }
-
-      /**
-       * Create a Mapbox GL JS `Popup`.
-       **/
-      function createPopUp(currentFeature) {
-        const popUps = document.getElementsByClassName('mapboxgl-popup');
-        if (popUps[0]) popUps[0].remove();
-        const popup = new mapboxgl.Popup({ closeOnClick: false })
-          .setLngLat(currentFeature.geometry.coordinates)
-          .setHTML(
-            `<h3>Sweetgreen</h3><h4>${currentFeature.properties.address}</h4>`
-          )
-          .addTo(map);
-      }
-    </script>
-  </body>
 </html>
